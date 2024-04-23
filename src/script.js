@@ -60,6 +60,12 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+/**
+ * EXTRA: Axes helper
+ */
+
+const axesHelper= new THREE.AxesHelper( 5 );
+scene.add(axesHelper)
 
 /**
  * INFO: Sounds
@@ -209,6 +215,16 @@ floorBody.quaternion.setFromAxisAngle(
 world.addBody(floorBody)
 
 // // EXTRA: FIXME: Wall collision
+
+const wall1Shape = new CANNON.Plane();
+const wall1Body = new CANNON.Body();
+wall1Body.mass = 0;
+wall1Body.addShape(wall1Shape);
+wall1Body.position.set(5, 0, 0)
+console.log(wall1Body)
+
+world.addBody(wall1Body)
+
 // const wallThickness = 0.1;
 
 // // 1. Create walls
@@ -298,14 +314,15 @@ scene.add(floor)
 
 const wallGeometry = new THREE.PlaneGeometry(10, 5);
 const wallMaterial = new THREE.MeshStandardMaterial({
-    color: '#777777',
+    color: '#00ff00',
     metalness: 0.3, 
     roughness: 0.4, 
     envMap: environmentMapTexture,
     envMapIntensity: 0.5, 
     side: THREE.DoubleSide, //double sided walls
     transparent: true,
-    opacity: 0.5
+    opacity: 0.2,
+
 });
 
 const createWall = (position, rotation) => {
@@ -316,10 +333,10 @@ const createWall = (position, rotation) => {
     scene.add(wall)
 }
 
-createWall(new THREE.Vector3(5, 2.5, 0), new THREE.Euler(0, Math.PI / 2, 0));
-createWall(new THREE.Vector3(0, 2.5, -5), new THREE.Euler(0, 0, Math.PI));
+createWall(new THREE.Vector3(0, 2.5, -5), new THREE.Euler(0, 0, 0));
 createWall(new THREE.Vector3(-5, 2.5, 0), new THREE.Euler(0, Math.PI / 2, 0));
 createWall(new THREE.Vector3(0, 2.5, 5), new THREE.Euler(0, 0, Math.PI));
+createWall(new THREE.Vector3(5, 2.5, 0), new THREE.Euler(0, Math.PI / 2, 0));
 
 /**
  * Lights
@@ -434,6 +451,7 @@ objectToUpdate.push({
 
 }
 
+
 createSphere(0.5, {x: 0, y: 3, z: 0 }) //the position doesn't have to be a Vector3 or Vec3, just coordinates
 
 //Boxes
@@ -479,9 +497,6 @@ objectToUpdate.push({
 }
 
 createBox(1, 0.5, 0.75, {x: 0, y: 3, z: 0 }) //the position doesn't have to be a Vector3 or Vec3, just coordinates
-
-
-
 
 
 /**
